@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+        .navbar {
+            z-index: 9999;
+            background-color: #074173
+        }
+
+        .dropdown-menu {
+            top: 100%; 
+            border: none; 
+        }
+
+        .navbar-vertical {
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0; 
+            width: 250px;
+            z-index: 1;
+            overflow-y: auto;
+            background-color: #074173;
+            border-right: 1px solid #111213;
+            transition: left 0.3s ease;
+            padding-top: 60px; 
+        }
+
+        @media (max-width: 768px) {
+            .navbar-vertical {
+                left: -250px; 
+            }
+            
+        }
+
+        .navbar-vertical.open {
+            left: 0; 
+            margin-top: 100px;
+        }
+
+
+        .navbar-vertical .nav-item {
+            background-color: #5DEBD7;
+            width: 100%;
+            margin-bottom: 10px;
+            margin-left: -20px;
+        }
+
+        .navbar-vertical .nav-item a {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            color: white;
+            transition: background-color 0.3s; 
+            border: 1px solid #dee2e6; 
+            margin-bottom: 10px; 
+            border-radius: 5px; 
+        }
+
+        .navbar-vertical .nav-item a:hover {
+            background-color: #1C4E80; 
+            color: white; 
+        }
+
+        .navbar-vertical .nav-item a i {
+            margin-right: 10px;
+        }
+
+        .navbar-brand {
+            cursor: pointer; 
+        }
+
+        .navbar-brand:hover {
+            text-decoration: none; 
+        }
+        li{
+            list-style-type: none;
+        }
+        .footer {
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 2.5rem;
+            background-color: #102C57;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+        .con{
+            position: relative;
+            min-height: 100vh;
+        }
+        .con1{
+            padding-bottom: 2.5rem;
+        }
+        body{
+            background-color: #1679AB;
+            font-family: Arial, sans-serif;
+        }
+        .card{
+            height: 200px;
+            background-color: #f2f2f2;
+        }
+        .popup {
+            width: 100px;
+            height: 100px;
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 20px;
+            z-index: 999;
+        }
+
+        .popup-content {
+            text-align: center;
+        }
+
+        .close {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            cursor: pointer;
+        }
+
+
+        .custom-card {
+            background-color: #F9F9F9;
+            border: 1px solid #E0E0E0;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .custom-card:hover {
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .custom-card img {
+            border-radius: 10px;
+            width: 100%;
+            height: 150px;
+            margin-bottom: 15px;
+        }
+
+        .custom-card .card-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .custom-card .card-text {
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+        @media (max-width: 768px) {
+            .opp{
+                margin-top: 130px;
+            }
+        }
+
+        
+        .chart-container {
+            margin-top: 100px;
+            text-align: center;
+        }
+
+        .chart-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .chart {
+            display: inline-block;
+            margin-right: 20px;
+        }
+
+        .bar {
+            width: 200px;
+            background-color: #1C4E80;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            position: relative;
+            overflow: hidden;
+        }
+        @media (max-width: 768px) {
+        .bar {
+        width: 50px; 
+        
+    }
+        
+}
+        .bar-label {
+            margin-top: 5px;
+            color: #666;
+        }
+
+        .bar-value {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #ffcc00;
+            height: 0;
+            transition: height 0.5s ease;
+            border-radius: 5px;
+        }
+
+        .chart:hover .bar-value {
+            height: 100%;
+        }
+        .connn{
+            padding-left: 250px;
+        }
+        @media (max-width: 768px) {
+    .connn {
+        padding-left: 0; 
+    }
+}
+    .wrapperr{
+        width: 90%;
+        height: auto;
+        margin: auto;
+        background-color: white;
+    }
+    h5{
+        color: #1C4E80;
+    }
+    .card {
+    transition: transform 0.3s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70px;
+    height: 70px;
+    background-color: #1C4E80;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+}
+
+.icon-container i {
+    color: #fff;
+    font-size: 30px;
+}
+
+.card-title {
+    color: #1C4E80;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.card-text {
+    color: #555;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.btn-secondary {
+    background-color: #1C4E80;
+    border-color: #1C4E80;
+}
+
+.btn-secondary:hover {
+    background-color: #154167;
+    border-color: #154167;
+    color: #fff;
+}
+    </style>
+</head>
+<body>
+<nav  class="navbar navbar-dark  fixed-top">
+    <a class="navbar-brand" href="#" onclick="toggleNavbar()">CRM</a>
+</nav>
+<div class="wrapperr">
+<nav class="navbar-vertical" id="navbarVertical">
+    <ul class="flex-column">
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'dash' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'archives' %}"><i class="fas fa-tachometer-alt"></i> Archives</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href=""><i class="fas fa-money-bill-wave"></i> Finance</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href=""><i class="fas fa-chart-line"></i> Sales</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href=""><i class="fas fa-users"></i> Human Resource</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href=""><i class="fas fa-globe"></i> Websites</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href=""><i class="fas fa-cogs"></i> Services</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href=""><i class="fas fa-check-circle"></i> Productivity</a>
+        </li>
+    </ul>
+</nav>
+<div class="connn">
+<div style=" margin-bottom: 80px; margin-top: 120px;" class="container">
+    <h1 style="padding-top: 50px; color: #1C4E80;">Welcome to the Dashboard</h1>
+    <p>This is where you can view important information and statistics about your CRM system.</p>
+    
+    
+    <div style="margin-bottom: 80px;" class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="icon-container">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h5 class="card-title">Total Sales</h5>
+                    <p class="card-text">View the total number of sales made and track progress</p>
+                    <a href="#" class="btn btn-secondary">View Sales</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="icon-container">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h5 class="card-title">New Customers</h5>
+                    <p class="card-text">See how many new customers have joined recently.</p>
+                    <a href="#" class="btn btn-secondary">View Customers</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="icon-container">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <h5 class="card-title">Pending Tasks</h5>
+                    <p class="card-text">Check out the tasks that are pending completion.</p>
+                    <a href="#" class="btn btn-secondary">View Tasks</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Recent Notifications</h5>
+                    <ul class="list-group">
+                        <li class="list-group-item">New contact added: John Smith</li>
+                        <li class="list-group-item">Task assigned: Follow up with client XYZ</li>
+                        <li class="list-group-item">New sale recorded: $1000</li>
+                        <li class="list-group-item">Meeting scheduled: 3:00 PM, Room 101</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="col-md-4">
+            <div class="opp">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Progress Tracking</h5>
+                    <div class="progress mb-3">
+                        <div class="progress-bar" role="progressbar" style="width: 60%; background-color: #1C4E80" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">60%</div>
+                    </div>
+                    <p class="card-text">Progress towards achieving a specific goal.</p>
+                    <a href="#" class="btn btn-secondary">View Goal</a>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    
+    <div class="chart-container">
+        <h1 class="chart-title">Sales Performance</h1>
+        <div class="chart">
+            <div class="bar" style="height: 120px;">
+                <div class="bar-value">120</div>
+            </div>
+            <div class="bar-label">2020</div>
+        </div>
+        <div class="chart">
+            <div class="bar" style="height: 160px;">
+                <div class="bar-value">160</div>
+            </div>
+            <div class="bar-label">2021</div>
+        </div>
+        <div class="chart">
+            <div class="bar" style="height: 80px;">
+                <div class="bar-value">80</div>
+            </div>
+            <div class="bar-label">2022</div>
+        </div>
+        <div class="chart">
+            <div class="bar" style="height: 200px;">
+                <div class="bar-value">200</div>
+            </div>
+            <div class="bar-label">2023</div>
+        </div>
+    </div>
+
+    <h2 style="margin-top: 50px; color: #1C4E80;">Customer reviews</h2>
+
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <div class="custom-card" draggable="true" ondragstart="drag(event)" id="dragData1">
+                <img class="card-img-top"
+                    src="https://t4.ftcdn.net/jpg/00/77/17/99/360_F_77179934_5gsWGgjiAp1oQPAYontd9I8m6FnL4og0.webp"
+                    alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">Andrews</h5>
+                    <p class="card-text">Great work...</p>
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-md-3">
+            <div class="custom-card" draggable="true" ondragstart="drag(event)" id="dragData2">
+                <img class="card-img-top"
+                    src="https://t4.ftcdn.net/jpg/00/77/17/99/360_F_77179934_5gsWGgjiAp1oQPAYontd9I8m6FnL4og0.webp"
+                    alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">Morgan</h5>
+                    <p class="card-text">Good...</p>
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-md-3">
+            <div class="custom-card" draggable="true" ondragstart="drag(event)" id="dragData3">
+                <img class="card-img-top"
+                    src="https://t4.ftcdn.net/jpg/00/77/17/99/360_F_77179934_5gsWGgjiAp1oQPAYontd9I8m6FnL4og0.webp"
+                    alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">Angel</h5>
+                    <p class="card-text">Satisfied...</p>
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-md-3">
+            <div class="custom-card" draggable="true" ondragstart="drag(event)" id="dragData4">
+                <img class="card-img-top"
+                    src="https://t4.ftcdn.net/jpg/00/77/17/99/360_F_77179934_5gsWGgjiAp1oQPAYontd9I8m6FnL4og0.webp"
+                    alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">Ryan</h5>
+                    <p class="card-text">Really happy...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="padding-bottom: 50px;" class="row mt-4">
+        <div class="col-md-3">
+            <div class="custom-card" draggable="true" ondragstart="drag(event)" id="dragData5">
+                <img class="card-img-top"
+                    src="https://t4.ftcdn.net/jpg/00/77/17/99/360_F_77179934_5gsWGgjiAp1oQPAYontd9I8m6FnL4og0.webp"
+                    alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">Jack</h5>
+                    <p class="card-text">Happy...</p>
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-md-3">
+            <div class="custom-card" draggable="true" ondragstart="drag(event)" id="dragData6">
+                <img class="card-img-top"
+                    src="https://t4.ftcdn.net/jpg/00/77/17/99/360_F_77179934_5gsWGgjiAp1oQPAYontd9I8m6FnL4og0.webp"
+                    alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">Jones</h5>
+                    <p class="card-text">Good...</p>
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-md-3">
+            <div class="custom-card" draggable="true" ondragstart="drag(event)" id="dragData7">
+                <img class="card-img-top"
+                    src="https://t4.ftcdn.net/jpg/00/77/17/99/360_F_77179934_5gsWGgjiAp1oQPAYontd9I8m6FnL4og0.webp"
+                    alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">Maggie</h5>
+                    <p class="card-text">Satisfied...</p>
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-md-3">
+            <div class="custom-card" draggable="true" ondragstart="drag(event)" id="dragData8">
+                <img class="card-img-top"
+                    src="https://t4.ftcdn.net/jpg/00/77/17/99/360_F_77179934_5gsWGgjiAp1oQPAYontd9I8m6FnL4og0.webp"
+                    alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">Smith</h5>
+                    <p class="card-text">Really happy</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="popup" id="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup()">&times;</span>
+            <i class="fas fa-folder"></i>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<script>
+    
+    function allowDrop(event) {
+        event.preventDefault();
+    }
+
+    
+    function drag(event) {
+    var cardElement = event.target.closest('.custom-card');
+    event.dataTransfer.setData("text", cardElement.id);
+    
+    showPopup();
+}
+
+
+    
+    function closePopup() {
+        document.getElementById('popup').style.display = 'none';
+    }
+
+    
+    document.getElementById('popup').addEventListener('dragover', function (event) {
+        event.preventDefault();
+    });
+
+    
+    document.getElementById('popup').addEventListener('drop', function (event) {
+        event.preventDefault();
+        var fetchData = event.dataTransfer.getData("text");
+        var draggedElement = document.getElementById(fetchData);
+        
+        draggedElement.parentNode.removeChild(draggedElement);
+        
+        var draggedHTML = draggedElement.outerHTML;
+        var savedHTMLArray = JSON.parse(sessionStorage.getItem("draggedHTMLArray")) || [];
+        savedHTMLArray.push(draggedHTML);
+        sessionStorage.setItem("draggedHTMLArray", JSON.stringify(savedHTMLArray));
+        
+        document.getElementById('popup').style.display = 'none';
+    });
+
+    
+    document.querySelectorAll("[draggable=true]").forEach(function (element) {
+        element.addEventListener("dragend", function (event) {
+            event.target.parentNode.removeChild(event.target);
+        });
+    });
+
+   
+    var savedHTMLArray = JSON.parse(sessionStorage.getItem("draggedHTMLArray"));
+
+    if (savedHTMLArray && savedHTMLArray.length > 0) {
+        savedHTMLArray.forEach(function (cardHTML) {
+            var card = document.createElement('div');
+            card.innerHTML = cardHTML;
+            var cardId = card.firstChild.id;
+            document.getElementById(cardId).remove();
+        });
+    }
+
+    
+    var touchStartX, touchStartY, touchEndX, touchEndY;
+
+function touchStart(event) {
+    
+    touchStartX = event.touches[0].clientX;
+    touchStartY = event.touches[0].clientY;
+    
+    showPopup();
+   
+    draggedElement = event.target.closest('.custom-card');
+}
+
+function touchMove(event) {
+    
+    event.preventDefault();
+}
+
+function touchEnd(event) {
+    
+    touchEndX = event.changedTouches[0].clientX;
+    touchEndY = event.changedTouches[0].clientY;
+    
+    if (Math.abs(touchEndX - touchStartX) < 10 && Math.abs(touchEndY - touchStartY) < 10) {
+        
+        event.target.click();
+    } else {
+        
+        if (draggedElement && draggedElement.parentNode) {
+            
+            draggedElement.parentNode.removeChild(draggedElement);
+
+            
+            var savedHTMLArray = JSON.parse(sessionStorage.getItem("draggedHTMLArray")) || [];
+            savedHTMLArray.push(draggedElement.outerHTML);
+            sessionStorage.setItem("draggedHTMLArray", JSON.stringify(savedHTMLArray));
+
+            
+            draggedElement = null;
+            
+            hidePopup();
+        }
+    }
+}
+
+
+function showPopup() {
+    document.getElementById('popup').style.display = 'block';
+}
+
+
+function hidePopup() {
+    document.getElementById('popup').style.display = 'none';
+}
+
+
+function renderCardsFromStorage() {
+    var savedHTMLArray = JSON.parse(sessionStorage.getItem("draggedHTMLArray")) || [];
+    savedHTMLArray.forEach(function (html) {
+        var tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+        document.body.appendChild(tempDiv.firstChild);
+    });
+}
+
+
+document.querySelectorAll(".custom-card").forEach(function (element) {
+    element.addEventListener("touchstart", touchStart);
+    element.addEventListener("touchmove", touchMove);
+    element.addEventListener("touchend", touchEnd);
+});
+
+
+
+
+</script>
+<script>
+    function toggleNavbar() {
+        var navbar = document.getElementById('navbarVertical');
+        navbar.classList.toggle('open');
+    }
+
+    document.addEventListener("click", function(event) {
+        var navbar = document.getElementById('navbarVertical');
+        if (event.target.closest('.navbar-brand') === null && !navbar.contains(event.target)) {
+            navbar.classList.remove('open');
+        }
+    });
+
+</script>
+
+<footer class="footer fixed-footer">
+    <div class="containe">
+        <span>&copy; 2024 CRM Software. All rights reserved.</span>
+    </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+        .navbar {
+            z-index: 9999;
+            background-color: #074173
+        }
+
+        .dropdown-menu {
+            top: 100%; 
+            border: none; 
+        }
+
+        .navbar-vertical {
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0; /* Always visible on larger screens */
+            width: 250px;
+            z-index: 1;
+            overflow-y: auto;
+            background-color: #074173;
+            border-right: 1px solid #111213;
+            transition: left 0.3s ease;
+            padding-top: 60px; 
+        }
+
+        @media (max-width: 768px) {
+            .navbar-vertical {
+                left: -250px; /* Initially hidden on smaller screens */
+            }
+            
+        }
+
+        .navbar-vertical.open {
+            left: 0; 
+            margin-top: 100px;
+        }
+
+
+        .navbar-vertical .nav-item {
+            background-color: #5DEBD7;
+            width: 100%;
+            margin-bottom: 10px;
+            margin-left: -20px;
+        }
+
+        .navbar-vertical .nav-item a {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            color: white;
+            transition: background-color 0.3s; 
+            border: 1px solid #dee2e6; 
+            margin-bottom: 10px; 
+            border-radius: 5px; 
+        }
+
+        .navbar-vertical .nav-item a:hover {
+            background-color: #1C4E80; 
+            color: white; 
+        }
+
+        .navbar-vertical .nav-item a i {
+            margin-right: 10px;
+        }
+
+        .navbar-brand {
+            cursor: pointer; 
+        }
+
+        .navbar-brand:hover {
+            text-decoration: none; 
+        }
+        li{
+            list-style-type: none;
+        }
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 2.5rem;
+            background-color: #f8f9fa;
+            color: #495057;
+            text-align: center;
+            padding: 10px 0;
+        }
+        .con{
+            position: relative;
+            min-height: 100vh;
+        }
+        .con1{
+            padding-bottom: 2.5rem;
+        }
+        .connn{
+            padding-left: 250px;
+        }
+        @media (max-width: 768px) {
+    .connn {
+        padding-left: 0; /* Remove padding on small screens */
+    }
+}
+    </style>
+</head>
+<body>
+    
+    <nav  class="navbar navbar-dark  fixed-top">
+        <a class="navbar-brand" href="#" onclick="toggleNavbar()">CRM</a>
+    </nav>
+    <div class="wrapperr">
+    <nav class="navbar-vertical" id="navbarVertical">
+        <ul class="flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
+            </li>
+    
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'dash' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'archives' %}"><i class="fas fa-tachometer-alt"></i> Archives</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href=""><i class="fas fa-money-bill-wave"></i> Finance</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href=""><i class="fas fa-chart-line"></i> Sales</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href=""><i class="fas fa-users"></i> Human Resource</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href=""><i class="fas fa-globe"></i> Websites</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href=""><i class="fas fa-cogs"></i> Services</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href=""><i class="fas fa-check-circle"></i> Productivity</a>
+            </li>
+        </ul>
+    </nav>
+<div class="connn">
+    <div style="margin-top: 100px;" class="container">
+        <a hidden href="{% url 'dash' %}" id="cardsLink">cards</a>
+
+        <h1 class="text-center">Archives</h1>
+        <div id="savedCardContainer" class="row"></div>
+    </div>
+
+
+</div>
+
+<script>
+    function handleCardsLinkClick(event) {
+        event.preventDefault();
+    }
+
+    document.getElementById("cardsLink").addEventListener("click", handleCardsLinkClick);
+
+    var savedHTMLArray = JSON.parse(sessionStorage.getItem("draggedHTMLArray"));
+    var savedCardContainer = document.getElementById("savedCardContainer");
+
+    
+    if (savedHTMLArray && savedHTMLArray.length > 0) {
+        savedHTMLArray.forEach(function(savedHTML) {
+            var tempContainer = document.createElement('div');
+            tempContainer.innerHTML = savedHTML;
+            var savedCard = tempContainer.firstChild;
+
+            var cardContainer = document.createElement('div');
+            cardContainer.className = 'col-lg-3 col-md-4 col-sm-6 mb-4';
+
+            
+            var card = document.createElement('div');
+            card.className = 'card h-100'; 
+            card.innerHTML = savedCard.innerHTML;
+
+            var cardBody = document.createElement('div');
+            cardBody.className = 'card-body d-flex flex-column'; 
+            cardBody.style.height = '100%'; 
+
+        
+            var undoButton = document.createElement('button');
+            undoButton.className = 'btn btn-danger mt-auto'; 
+            undoButton.innerHTML = 'Dis archive';
+
+           
+            undoButton.addEventListener('click', function(event) {
+                
+                cardContainer.parentNode.removeChild(cardContainer);
+                
+                var index = savedHTMLArray.indexOf(savedHTML);
+                if (index > -1) {
+                    savedHTMLArray.splice(index, 1);
+                    sessionStorage.setItem("draggedHTMLArray", JSON.stringify(savedHTMLArray));
+                }
+                
+                // window.open("{% url 'dash' %}", "_self");
+            });
+
+            
+            cardBody.appendChild(undoButton);
+
+            
+            card.appendChild(cardBody);
+
+            
+            cardContainer.appendChild(card);
+
+            
+            savedCardContainer.appendChild(cardContainer);
+        });
+    } else {
+        
+        savedCardContainer.innerHTML = "<div class='col text-center'>No archived reviews available.</div>";
+    }
+</script>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script>
+    function toggleNavbar() {
+        var navbar = document.getElementById('navbarVertical');
+        navbar.classList.toggle('open');
+    }
+
+    // Close navbar on outside click
+    document.addEventListener("click", function(event) {
+        var navbar = document.getElementById('navbarVertical');
+        if (event.target.closest('.navbar-brand') === null && !navbar.contains(event.target)) {
+            navbar.classList.remove('open');
+        }
+    });
+
+</script>
+
+{% block content %}
+{% endblock %}
+
+<footer class="footer fixed-footer">
+    <div class="containe">
+        <span>&copy; 2024 CRM Software. All rights reserved.</span>
+    </div>
+</footer>
+
+</body>
+</html>

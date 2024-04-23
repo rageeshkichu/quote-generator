@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        .navbar{
+            max-width: 100%;
+            position: fixed;
+        }
+        .footer {
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 2.5rem;
+            background-color: #102C57;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#"><i class="fas fa-cogs"></i> CRM</a> <!-- Replacing text with an icon -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#home"><i class="fas fa-home"></i> Home</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'dash' %}"><i class="fas fa-layer-group"></i> Dashboard</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="#home"><i class="fas fa-info-circle"></i> Overview</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="#home"><i class="fas fa-sign-in-alt"></i> Sign In</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+{% block content %}
+{% endblock %}
+<footer class="footer fixed-footer">
+    <div class="containe">
+        <span>&copy; 2024 CRM Software. All rights reserved.</span>
+    </div>
+</footer>
+</body>
+</html>
